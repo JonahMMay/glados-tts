@@ -158,7 +158,7 @@ class Cleaner:
 
         if self.use_phonemes:
             # Phonemize the text using the appropriate method
-            text = self.phonemizer(text, lang='en_us')
+            phonemized_text = self.phonemizer(text, lang='en_us')
 
             # Filter out unwanted phonemes
             text = ''.join([p for p in phonemized_text if p in phonemes_set])
