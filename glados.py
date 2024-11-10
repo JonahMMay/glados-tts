@@ -24,7 +24,7 @@ kwargs = {
 }
 
 class tts_runner:
-    def __init__(self, use_p1: bool=False, log: bool=False, models_dir: str='models'):
+    def __init__(self, use_p1: bool=False, log: bool=False, models_dir: str='gladostts/models'):
         self.log = log
         self.models_dir = models_dir
         if use_p1:
