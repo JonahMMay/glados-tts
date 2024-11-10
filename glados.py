@@ -67,7 +67,7 @@ class TTSRunner:
         """Warm-up the models to reduce initial inference time."""
         _LOGGER.info("Warming up models...")
         with torch.no_grad():
-            x = prepare_text("Hello", str(self.models_dir), self.device)
+            x = prepare_text("Hello", self.models_dir, self.device)
             x = x.to(self.device)
             self.emb = self.emb.to(self.device)
             outputs = self.glados.generate_jit(x, self.emb, 1.0)
