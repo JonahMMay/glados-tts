@@ -106,7 +106,7 @@ class Cleaner:
                 raise FileNotFoundError(f"Phonemizer checkpoint not found at {checkpoint_path}")
 
             # Initialize the phonemizer
-            self.phonemizer = Phonemizer.from_checkpoint(
+            self.phonemize = Phonemizer.from_checkpoint(
                 checkpoint_path, device=self.device
             )
 
