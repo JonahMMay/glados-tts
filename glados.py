@@ -42,10 +42,10 @@ class tts_runner:
             self.device = 'cpu'
 
         # Load models
-        self.glados = torch.jit.load(os.path.join(self.models_dir, 'glados-new.pt'), weights_only=True)
+        self.glados = torch.jit.load(os.path.join(self.models_dir, 'glados-new.pt'))
         self.vocoder = torch.jit.load(
             os.path.join(self.models_dir, 'vocoder-gpu.pt'),
-            map_location=self.device, weights_only=True
+            map_location=self.device
         )
         
         for i in range(2):
