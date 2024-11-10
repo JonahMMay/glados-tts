@@ -64,7 +64,7 @@ class Cleaner:
                  cleaner_name: str,
                  use_phonemes: bool,
                  lang: str,
-                models_dir: str) -> None:
+                 models_dir: str) -> None:
         if cleaner_name == 'english_cleaners':
             self.clean_func = english_cleaners
         elif cleaner_name == 'no_cleaners':
