@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from utils.tools import prepare_text
+from .utils.tools import prepare_text
 from scipy.io.wavfile import write
 import time
 import tempfile
