@@ -7,7 +7,7 @@ from unidecode import unidecode
 from .numbers import normalize_numbers
 from .symbols import phonemes_set
 
-from deep_phonemizer import Phonemizer
+from dp.phonemizer import Phonemizer
 
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r'\s+')
