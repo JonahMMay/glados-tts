@@ -1,3 +1,4 @@
+import os
 import torch
 import numpy as np
 from .utils.tools import prepare_text
@@ -23,12 +24,14 @@ kwargs = {
 }
 
 class tts_runner:
-    def __init__(self, use_p1: bool=False, log: bool=False):
+    def __init__(self, use_p1: bool=False, log: bool=False, models_dir: str='models'):
         self.log = log
+        self.models_dir = models_dir
         if use_p1:
-            self.emb = torch.load('models/emb/glados_p1.pt')
+            emb_path = os.path.join(self.models_dir, 'emb', 'glados_p1.pt')
         else:
-            self.emb = torch.load('models/emb/glados_p2.pt')
+            emb_path = os.path.join(self.models_dir, 'emb', 'glados_p2.pt')
+        self.emb = torch.load(emb_path)
         # Select the device
         if torch.cuda.is_available():
             self.device = 'cuda'
@@ -38,8 +41,11 @@ class tts_runner:
             self.device = 'cpu'
 
         # Load models
-        self.glados = torch.jit.load('models/glados-new.pt')
-        self.vocoder = torch.jit.load('models/vocoder-gpu.pt', map_location=self.device)
+        self.glados = torch.jit.load(os.path.join(self.models_dir, 'glados-new.pt'))
+        self.vocoder = torch.jit.load(
+            os.path.join(self.models_dir, 'vocoder-gpu.pt'),
+            map_location=self.device
+        )
         for i in range(2):
             init = self.glados.generate_jit(prepare_text(str(i)), self.emb, 1.0)
             init_mel = init['mel_post'].to(self.device)
