@@ -64,7 +64,7 @@ class Cleaner:
                  cleaner_name: str,
                  use_phonemes: bool,
                  lang: str,
-                 models_dir: str) -> None:
+                 models_dir: Path) -> None:
         if cleaner_name == 'english_cleaners':
             self.clean_func = english_cleaners
         elif cleaner_name == 'no_cleaners':
@@ -76,10 +76,10 @@ class Cleaner:
         self.lang = lang
         if use_phonemes:
             # Use models_dir to construct the path
-            checkpoint_path = Path(models_dir) / 'en_us_cmudict_ipa_forward.pt'
+            checkpoint_path = models_dir / 'en_us_cmudict_ipa_forward.pt'
             if not checkpoint_path.is_file():
                 raise FileNotFoundError(f"Phonemizer checkpoint not found at {checkpoint_path}")
-            self.phonemize = Phonemizer.from_checkpoint('models/en_us_cmudict_ipa_forward.pt')
+            self.phonemize = Phonemizer.from_checkpoint(str(checkpoint_path))
 
     def __call__(self, text: str) -> str:
         text = self.clean_func(text)
