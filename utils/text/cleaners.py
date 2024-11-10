@@ -123,17 +123,13 @@ class Cleaner:
 
         if self.use_phonemes:
             # Phonemize the text
-            text = self.phonemize(
-                [text],
-                lang=self.lang,
-                separator='',
-                njobs=1,
-            )[0]
+            text = self.phonemize(text, lang='en_us')
 
             # Filter out unwanted phonemes
             text = ''.join([p for p in text if p in phonemes_set])
 
         text = collapse_whitespace(text)
+        text = text.strip()
         return text
 
     @classmethod
