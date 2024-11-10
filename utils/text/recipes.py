@@ -5,7 +5,7 @@ from typing import Tuple
 import pandas as pd
 import tqdm
 
-from utils.files import get_files
+from .utils.files import get_files
 
 DEFAULT_SPEAKER_NAME = 'default_speaker'
 
