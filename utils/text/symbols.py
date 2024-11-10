@@ -13,15 +13,7 @@ _special = '-'
 # Phonemes (International Phonetic Alphabet symbols)
 _vowels = 'iyɨʉɯuɪʏʊeøɘəɵɤoɛœɜɞʌɔæɐaɶɑɒᵻ'
 _non_pulmonic_consonants = 'ʘɓǀɗǃʄǂɠǁʛ'
-_pulmonic_consonants = (
-    'pbtdʈɖcɟkɡqɢʔ'
-    'ɴŋɲɳnɱ'
-    'ʙrʀ'
-    'ⱱɾɽ'
-    'ɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦ'
-    'ɬɮ'
-    'ʋɹɻjɰlɭʎʟ'
-)
+_pulmonic_consonants = 'pbtdʈɖcɟkɡqɢʔɴŋɲɳnɱmʙrʀⱱɾɽɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦɬɮʋɹɻjɰlɭʎʟ'
 _suprasegmentals = 'ˈˌːˑ'
 _other_symbols = 'ʍwɥʜʢʡɕʑɺɧ'
 _diacritics = 'ɚ˞ɫ'
