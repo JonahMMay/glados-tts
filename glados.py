@@ -32,7 +32,7 @@ class tts_runner:
         emb_path = self.models_dir / 'emb' / emb_filename
         if not emb_path.is_file():
             raise FileNotFoundError(f"Embedding model not found at {emb_path}")
-        self.emb = torch.load(str(emb_path))
+        self.emb = torch.load(str(emb_path), weights_only=True)
         # Select the device
         if torch.cuda.is_available():
             self.device = 'cuda'
@@ -42,10 +42,10 @@ class tts_runner:
             self.device = 'cpu'
 
         # Load models
-        self.glados = torch.jit.load(os.path.join(self.models_dir, 'glados-new.pt'))
+        self.glados = torch.jit.load(os.path.join(self.models_dir, 'glados-new.pt'), weights_only=True)
         self.vocoder = torch.jit.load(
             os.path.join(self.models_dir, 'vocoder-gpu.pt'),
-            map_location=self.device
+            map_location=self.device, weights_only=True
         )
         
         for i in range(2):
