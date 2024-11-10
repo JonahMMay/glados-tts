@@ -3,8 +3,8 @@ from typing import Dict, Any
 
 from unidecode import unidecode
 
-from .text.numbers import normalize_numbers
-from .text.symbols import phonemes_set
+from .numbers import normalize_numbers
+from .symbols import phonemes_set
 
 from dp.phonemizer import Phonemizer
 import torch
