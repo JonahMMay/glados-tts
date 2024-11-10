@@ -1,5 +1,7 @@
+import os
 import re
 from typing import Dict, Any
+from pathlib import Path
 
 from unidecode import unidecode
 
@@ -61,7 +63,8 @@ class Cleaner:
     def __init__(self,
                  cleaner_name: str,
                  use_phonemes: bool,
-                 lang: str) -> None:
+                 lang: str,
+                models_dir: str) -> None:
         if cleaner_name == 'english_cleaners':
             self.clean_func = english_cleaners
         elif cleaner_name == 'no_cleaners':
@@ -72,6 +75,10 @@ class Cleaner:
         self.use_phonemes = use_phonemes
         self.lang = lang
         if use_phonemes:
+            # Use models_dir to construct the path
+            checkpoint_path = Path(models_dir) / 'en_us_cmudict_ipa_forward.pt'
+            if not checkpoint_path.is_file():
+                raise FileNotFoundError(f"Phonemizer checkpoint not found at {checkpoint_path}")
             self.phonemize = Phonemizer.from_checkpoint('models/en_us_cmudict_ipa_forward.pt')
 
     def __call__(self, text: str) -> str:
