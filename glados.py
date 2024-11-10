@@ -28,7 +28,7 @@ class tts_runner:
     def __init__(self, use_p1: bool=False, log: bool=False, models_dir: str='models'):
         self.log = log
         self.models_dir = models_dir
-        emb_filename = 'glados_p1.pt' if use_p1 else 'glados_p2.pt
+        emb_filename = 'glados_p1.pt' if use_p1 else 'glados_p2.pt'
         emb_path = self.models_dir / 'emb' / emb_filename
         if not emb_path.is_file():
             raise FileNotFoundError(f"Embedding model not found at {emb_path}")
