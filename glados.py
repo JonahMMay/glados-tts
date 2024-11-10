@@ -18,7 +18,7 @@ class TTSRunner:
         self,
         use_p1: bool = False,
         log: bool = False,
-        models_dir: str = 'models',
+        models_dir: Path = 'models',
     ):
         """
         Initialize the TTS engine.
