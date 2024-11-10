@@ -18,7 +18,7 @@ class TTSRunner:
         self,
         use_p1: bool = False,
         log: bool = False,
-        models_dir: Path = 'models',
+        models_dir: Path = Path('models'),
     ):
         """
         Initialize the TTS engine.
@@ -29,7 +29,7 @@ class TTSRunner:
             models_dir: Directory where model files are stored.
         """
         self.log = log
-        self.models_dir = Path(models_dir)
+        self.models_dir = models_dir
 
         emb_filename = 'glados_p1.pt' if use_p1 else 'glados_p2.pt'
         emb_path = self.models_dir / 'emb' / emb_filename
