@@ -1,6 +1,6 @@
 from typing import List
 
-from utils.text.symbols import phonemes
+from .utils.text.symbols import phonemes
 
 
 class Tokenizer:
