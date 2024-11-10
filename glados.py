@@ -10,6 +10,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 from nltk import download
 from nltk.tokenize import sent_tokenize
+from pathlib import Path
 from sys import modules as mod
 try:
     import winsound
@@ -46,13 +47,17 @@ class tts_runner:
             os.path.join(self.models_dir, 'vocoder-gpu.pt'),
             map_location=self.device
         )
+        
         for i in range(2):
-            init = self.glados.generate_jit(prepare_text(str(i)), self.emb, 1.0)
+            init = self.glados.generate_jit(
+                prepare_text(str(i), self.models_dir),
+                self.emb, 1.0
+            )
             init_mel = init['mel_post'].to(self.device)
             init_vo = self.vocoder(init_mel)
 
     def run_tts(self, text, alpha: float=1.0) -> AudioSegment:
-        x = prepare_text(text)
+        x = prepare_text(text, self.models_dir)
 
         with torch.no_grad():
 
