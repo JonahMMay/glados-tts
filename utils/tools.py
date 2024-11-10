@@ -3,9 +3,10 @@ import torch
 from .text.cleaners import Cleaner
 from .text.tokenizer import Tokenizer
 
-def prepare_text(text: str)->str:
-    if not ((text[-1] == '.') or (text[-1] == '?') or (text[-1] == '!')):
-        text = text + '.'
-    cleaner = Cleaner('english_cleaners', True, 'en-us')
+def prepare_text(text: str, models_dir: str) -> torch.Tensor:
+    if not text[-1] in '.?!':
+        text += '.'
+    cleaner = Cleaner('english_cleaners', True, 'en-us', models_dir=models_dir)
     tokenizer = Tokenizer()
-    return torch.as_tensor(tokenizer(cleaner(text)), dtype=torch.long, device='cpu').unsqueeze(0)
+    tokens = tokenizer(cleaner(text))
+    return torch.as_tensor(tokens, dtype=torch.long, device='cpu').unsqueeze(0)
