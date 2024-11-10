@@ -1,6 +1,6 @@
 import re
-from typing import Dict, Any
 from pathlib import Path
+from typing import Any, Dict, Optional
 
 from unidecode import unidecode
 
@@ -8,12 +8,11 @@ from .numbers import normalize_numbers
 from .symbols import phonemes_set
 
 from dp.phonemizer import Phonemizer
-import torch
 
-# Regular expression matching whitespace:
+# Regular expression matching whitespace
 _whitespace_re = re.compile(r'\s+')
 
-# List of (regular expression, replacement) pairs for abbreviations:
+# List of (regular expression, replacement) pairs for abbreviations
 _abbreviations = [
     (re.compile(r'\b%s\.' % abbrev, re.IGNORECASE), full_form)
     for abbrev, full_form in [
@@ -40,24 +39,56 @@ _abbreviations = [
 
 
 def expand_abbreviations(text: str) -> str:
-    """Expand common abbreviations in the text."""
+    """
+    Expand common abbreviations in the text.
+
+    Args:
+        text: The input text containing abbreviations.
+
+    Returns:
+        The text with abbreviations expanded.
+    """
     for regex, replacement in _abbreviations:
         text = regex.sub(replacement, text)
     return text
 
 
 def collapse_whitespace(text: str) -> str:
-    """Collapse multiple whitespaces into a single space."""
+    """
+    Collapse multiple whitespaces into a single space.
+
+    Args:
+        text: The input text with potential multiple spaces.
+
+    Returns:
+        The text with whitespace collapsed.
+    """
     return _whitespace_re.sub(' ', text).strip()
 
 
 def no_cleaners(text: str) -> str:
-    """Return the text unchanged."""
+    """
+    Return the text unchanged.
+
+    Args:
+        text: The input text.
+
+    Returns:
+        The unchanged text.
+    """
     return text
 
 
 def english_cleaners(text: str) -> str:
-    """Clean English text by unidecoding, normalizing numbers, and expanding abbreviations."""
+    """
+    Clean English text by unidecoding, normalizing numbers, and expanding abbreviations.
+
+    Args:
+        text: The input text to clean.
+
+    Returns:
+        The cleaned text.
+    """
     text = unidecode(text)
     text = normalize_numbers(text)
     text = expand_abbreviations(text)
@@ -79,9 +110,9 @@ class Cleaner:
         Initialize the Cleaner.
 
         Args:
-            cleaner_name: Name of the cleaning function to use.
+            cleaner_name: Name of the cleaning function to use ('english_cleaners' or 'no_cleaners').
             use_phonemes: Whether to convert text to phonemes.
-            lang: Language code for phonemization.
+            lang: Language code for phonemization (e.g., 'en_us').
             models_dir: Directory containing model files.
             device: Device to load models onto ('cpu' or 'cuda').
         """
@@ -103,10 +134,13 @@ class Cleaner:
             # Construct the path to the phonemizer checkpoint
             checkpoint_path = models_dir / 'en_us_cmudict_ipa_forward.pt'
             if not checkpoint_path.is_file():
-                raise FileNotFoundError(f"Phonemizer checkpoint not found at {checkpoint_path}")
+                raise FileNotFoundError(
+                    f"Phonemizer checkpoint not found at {checkpoint_path}. "
+                    "Ensure that the model file exists."
+                )
 
             # Initialize the phonemizer
-            self.phonemize = Phonemizer.from_checkpoint(
+            self.phonemizer = Phonemizer.from_checkpoint(
                 checkpoint_path, device=self.device
             )
 
@@ -118,19 +152,31 @@ class Cleaner:
             text: Input text to clean.
 
         Returns:
-            Cleaned (and phonemized) text.
+            Cleaned (and optionally phonemized) text.
         """
         text = self.clean_func(text)
 
         if self.use_phonemes:
-            # Phonemize the text
-            text = self.phonemize(text, lang='en_us')
+            # Phonemize the text using the appropriate method
+            if hasattr(self.phonemizer, 'phonemize'):
+                phonemized_text = self.phonemizer.phonemize(
+                    [text],
+                    lang=self.lang,
+                    separator='',
+                    njobs=1,
+                )[0]
+            else:
+                phonemized_text = self.phonemizer(
+                    [text],
+                    lang=self.lang,
+                    separator='',
+                    njobs=1,
+                )[0]
 
             # Filter out unwanted phonemes
-            text = ''.join([p for p in text if p in phonemes_set])
+            text = ''.join([p for p in phonemized_text if p in phonemes_set])
 
         text = collapse_whitespace(text)
-        text = text.strip()
         return text
 
     @classmethod
