@@ -86,7 +86,7 @@ class TTSRunner:
         Returns:
             An AudioSegment containing the synthesized speech.
         """
-        x = prepare_text(text, str(self.models_dir), self.device)
+        x = prepare_text(text, self.models_dir, self.device)
         x = x.to(self.device)
         self.emb = self.emb.to(self.device)
 
