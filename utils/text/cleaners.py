@@ -158,20 +158,7 @@ class Cleaner:
 
         if self.use_phonemes:
             # Phonemize the text using the appropriate method
-            if hasattr(self.phonemizer, 'phonemize'):
-                phonemized_text = self.phonemizer.phonemize(
-                    [text],
-                    lang=self.lang,
-                    separator='',
-                    njobs=1,
-                )[0]
-            else:
-                phonemized_text = self.phonemizer(
-                    [text],
-                    lang=self.lang,
-                    separator='',
-                    njobs=1,
-                )[0]
+            text = self.phonemize(text, lang='en_us')
 
             # Filter out unwanted phonemes
             text = ''.join([p for p in phonemized_text if p in phonemes_set])
