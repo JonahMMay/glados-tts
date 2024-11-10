@@ -1,5 +1,4 @@
 import torch
-
 from .text.cleaners import Cleaner
 from .text.tokenizer import Tokenizer
 
@@ -9,4 +8,8 @@ def prepare_text(text: str, models_dir: str) -> torch.Tensor:
     cleaner = Cleaner('english_cleaners', True, 'en-us', models_dir=models_dir)
     tokenizer = Tokenizer()
     tokens = tokenizer(cleaner(text))
-    return torch.as_tensor(tokens, dtype=torch.long, device='cpu').unsqueeze(0)
+    
+    # Detect device
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    
+    return torch.as_tensor(tokens, dtype=torch.long, device=device).unsqueeze(0)
