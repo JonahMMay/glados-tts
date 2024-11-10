@@ -123,7 +123,7 @@ class Cleaner:
 
         if self.use_phonemes:
             # Phonemize the text
-            text = self.phonemizer.phonemize(
+            text = self.phonemize(
                 [text],
                 lang=self.lang,
                 separator='',
