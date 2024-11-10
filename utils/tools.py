@@ -1,4 +1,5 @@
 import torch
+from pathlib import Path
 from .text.cleaners import Cleaner
 from .text.tokenizer import Tokenizer
 
