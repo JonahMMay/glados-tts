@@ -57,7 +57,7 @@ class tts_runner:
         
         for i in range(2):
             init = self.glados.generate_jit(
-                prepare_text(str(i), self.models_dir),
+                prepare_text(str(i), self.models_dir, self.device),
                 self.emb, 1.0
             )
             init_mel = init['mel_post'].to(self.device)
