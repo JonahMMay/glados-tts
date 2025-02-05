@@ -47,6 +47,7 @@ class TTSRunner:
         _LOGGER.info(f"Using device: {self.device}")
 
         # Load the embedding
+        torch.serialization.add_safe_globals([Preprocessor])
         self.emb = torch.load(str(emb_path), map_location=self.device, weights_only=True)
         self.emb = self.emb.to(self.device)
 
