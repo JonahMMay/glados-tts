@@ -5,6 +5,7 @@ from typing import Optional
 
 import torch
 from pydub import AudioSegment, playback
+from dp.preprocessing.text import Preprocessor
 
 from .utils.tools import prepare_text
 
