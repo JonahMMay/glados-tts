@@ -47,15 +47,15 @@ class TTSRunner:
         _LOGGER.info(f"Using device: {self.device}")
 
         # Load the embedding
-        self.emb = torch.load(str(emb_path), map_location=self.device)
+        self.emb = torch.load(str(emb_path), map_location=self.device, weights_only=True)
         self.emb = self.emb.to(self.device)
 
         # Load models
         glados_model_path = self.models_dir / 'glados-new.pt'
         vocoder_model_path = self.models_dir / 'vocoder-gpu.pt'
 
-        self.glados = torch.jit.load(str(glados_model_path), map_location=self.device)
-        self.vocoder = torch.jit.load(str(vocoder_model_path), map_location=self.device)
+        self.glados = torch.jit.load(str(glados_model_path), map_location=self.device, weights_only=True)
+        self.vocoder = torch.jit.load(str(vocoder_model_path), map_location=self.device, weights_only=True)
 
         self.glados.to(self.device)
         self.vocoder.to(self.device)
