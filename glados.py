@@ -5,7 +5,7 @@ from typing import Optional
 
 import torch
 from pydub import AudioSegment, playback
-from dp.preprocessing.text import Preprocessor, LanguageTokenizer
+from dp.preprocessing.text import Preprocessor, LanguageTokenizer, SequenceTokenizer
 
 from .utils.tools import prepare_text
 
@@ -47,8 +47,10 @@ class TTSRunner:
 
         _LOGGER.info(f"Using device: {self.device}")
 
+        # Register all necessary globals as safe
+        torch.serialization.add_safe_globals([Preprocessor, LanguageTokenizer, SequenceTokenizer])
+
         # Load the embedding
-        torch.serialization.add_safe_globals([Preprocessor, LanguageTokenizer])
         self.emb = torch.load(str(emb_path), map_location=self.device, weights_only=True)
         self.emb = self.emb.to(self.device)
 
